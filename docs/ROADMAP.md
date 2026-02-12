@@ -1,317 +1,126 @@
-# 개발 로드맵: Notion Blog
+# 장소 기록 관리 웹 개발 로드맵
 
-> Notion을 CMS로 활용한 개인 개발 블로그 개발 계획
+로그인한 사용자가 맛집/장소를 등록하고, 다른 사용자들과 별점 및 리뷰를 공유하는 소셜 장소 추천 서비스 MVP
 
 ## 개요
 
-이 문서는 Notion Blog 프로젝트의 개발 로드맵을 정의합니다.
-각 Phase는 순차적으로 진행되며, 이전 Phase의 완료가 다음 Phase의 선행 조건입니다.
-
----
-
-## Phase 1: 프로젝트 초기 설정
-
-### 목표
-
-견고한 개발 기반을 구축하여 이후 기능 개발이 원활하게 진행될 수 있도록 합니다.
-
-### 예상 소요 시간
-
-1-2일
-
-### 작업 항목
-
-| 작업                       | 설명                                       | 우선순위 |
-| -------------------------- | ------------------------------------------ | -------- |
-| Next.js 프로젝트 구조 설정 | Next.js 15 + App Router 기반 프로젝트 생성 | 높음     |
-| TypeScript 설정            | 타입 안정성을 위한 TypeScript 5.x 설정     | 높음     |
-| Tailwind CSS 설정          | 스타일링을 위한 Tailwind CSS 3.x 설정      | 높음     |
-| shadcn/ui 설정             | UI 컴포넌트 라이브러리 설정                | 중간     |
-| Notion API 연동 환경 구축  | 환경 변수 설정 및 API 클라이언트 초기화    | 높음     |
-| 기본 레이아웃 구조 생성    | app/layout.tsx 기본 구조 작성              | 높음     |
-| ESLint/Prettier 설정       | 코드 품질 및 일관성 유지를 위한 설정       | 중간     |
-
-### 완료 기준
-
-- [ ] `npm run dev` 실행 시 에러 없이 로컬 서버 구동
-- [ ] TypeScript 컴파일 에러 없음
-- [ ] Tailwind CSS 스타일이 정상 적용됨
-- [ ] 환경 변수 파일(`.env.local`)에 Notion API 키 설정 완료
-- [ ] Notion API 연결 테스트 성공 (간단한 API 호출로 확인)
-- [ ] 기본 레이아웃이 브라우저에 렌더링됨
-
-### 선행 조건
-
-- Notion 워크스페이스 및 데이터베이스 생성 완료
-- Notion Integration 생성 및 API 키 발급 완료
-
----
-
-## Phase 2: 공통 모듈 개발
-
-### 목표
-
-모든 기능에서 재사용되는 공통 코드를 먼저 개발하여 중복을 방지하고 일관성을 확보합니다.
-
-### 예상 소요 시간
-
-2-3일
-
-### 작업 항목
-
-| 작업                 | 설명                                                 | 우선순위 |
-| -------------------- | ---------------------------------------------------- | -------- |
-| Notion API 공통 함수 | `fetchPages`, `fetchPageContent` 등 데이터 페칭 함수 | 높음     |
-| 공통 타입 정의       | `Post`, `Category`, `Tag` 등 TypeScript 타입         | 높음     |
-| Header 컴포넌트      | 네비게이션 및 로고 포함                              | 높음     |
-| Footer 컴포넌트      | 저작권 정보 및 링크                                  | 중간     |
-| Card 컴포넌트        | 포스트 목록에서 사용할 카드 UI                       | 높음     |
-| 유틸리티 함수        | 날짜 포맷팅, 슬러그 생성 등                          | 중간     |
-
-### 상세 구현 내용
-
-#### Notion API 공통 함수
-
-```typescript
-// lib/notion.ts
-- getDatabase(): 전체 포스트 목록 조회
-- getPage(): 단일 포스트 조회
-- getPageContent(): 포스트 본문 블록 조회
-- getCategories(): 카테고리 목록 조회
-```
-
-#### 공통 타입 정의
-
-```typescript
-// types/post.ts
-- Post: 포스트 기본 정보
-- PostDetail: 포스트 상세 정보 (본문 포함)
-- Category: 카테고리 정보
-- Tag: 태그 정보
-- NotionBlock: Notion 블록 타입
-```
-
-### 완료 기준
-
-- [ ] Notion API 함수가 실제 데이터를 정상적으로 반환
-- [ ] 모든 공통 타입이 정의되고 컴파일 에러 없음
-- [ ] Header, Footer 컴포넌트가 레이아웃에 정상 표시
-- [ ] Card 컴포넌트가 샘플 데이터로 렌더링 확인
-- [ ] API 에러 핸들링이 구현됨
-
-### 선행 조건
-
-- Phase 1 완료
-- Notion 데이터베이스에 테스트용 포스트 최소 3개 이상 등록
-
----
-
-## Phase 3: 핵심 기능 개발
-
-### 목표
-
-블로그의 가장 기본이 되는 핵심 기능을 구현합니다. 이 Phase 완료 후 블로그로서 기본적인 역할을 수행할 수 있어야 합니다.
-
-### 예상 소요 시간
-
-3-4일
-
-### 작업 항목
-
-| 작업               | 설명                             | 우선순위 |
-| ------------------ | -------------------------------- | -------- |
-| 홈 페이지          | 히어로 섹션 + 최신 포스트 목록   | 높음     |
-| 포스트 목록 페이지 | 전체 포스트 목록 및 페이지네이션 | 높음     |
-| 포스트 상세 페이지 | 개별 포스트 내용 표시            | 높음     |
-| Notion 블록 렌더러 | Notion 블록을 HTML로 변환        | 높음     |
-| 코드 하이라이팅    | 코드 블록 구문 강조              | 중간     |
-| 목차(TOC) 생성     | 헤딩 기반 목차 자동 생성         | 중간     |
-
-### 상세 구현 내용
-
-#### 지원할 Notion 블록 타입
-
-- paragraph (문단)
-- heading_1, heading_2, heading_3 (제목)
-- bulleted_list_item (글머리 기호 목록)
-- numbered_list_item (번호 목록)
-- code (코드 블록)
-- image (이미지)
-- quote (인용)
-- divider (구분선)
-- callout (콜아웃)
-- table (표)
-
-#### 라우트 구조
-
-```
-/                       - 홈 페이지
-/posts                  - 포스트 목록
-/posts/[slug]           - 포스트 상세
-```
-
-### 완료 기준
-
-- [ ] 홈 페이지에서 최신 포스트 5개 이상 표시
-- [ ] 포스트 목록에서 모든 Published 상태 포스트 표시
-- [ ] 포스트 상세 페이지에서 Notion 콘텐츠가 정상 렌더링
-- [ ] 코드 블록에 구문 강조 적용
-- [ ] 헤딩 기반 목차가 생성되고 클릭 시 해당 위치로 스크롤
-- [ ] 이전/다음 포스트 네비게이션 동작
-- [ ] 모든 페이지에서 Draft 상태 포스트는 표시되지 않음
-
-### 선행 조건
-
-- Phase 2 완료
-- Notion 데이터베이스에 다양한 블록 타입을 포함한 테스트 포스트 등록
-
----
-
-## Phase 4: 추가 기능 개발
-
-### 목표
-
-핵심 기능이 완성된 후 사용자 경험을 향상시키는 부가 기능을 추가합니다.
-
-### 예상 소요 시간
-
-2-3일
-
-### 작업 항목
-
-| 작업             | 설명                             | 우선순위 |
-| ---------------- | -------------------------------- | -------- |
-| 카테고리 페이지  | 카테고리별 포스트 목록           | 높음     |
-| 카테고리 필터링  | 홈/목록 페이지에서 카테고리 필터 | 높음     |
-| 검색 기능        | 제목/내용 기반 검색              | 중간     |
-| 태그 필터링      | 태그별 포스트 필터링             | 중간     |
-| SEO 최적화       | 메타태그, OG 태그, 구조화 데이터 | 높음     |
-| sitemap.xml 생성 | 검색 엔진 크롤링용 사이트맵      | 중간     |
-| robots.txt 설정  | 검색 엔진 크롤링 규칙            | 중간     |
-
-### 상세 구현 내용
-
-#### 카테고리 페이지 라우트
-
-```
-/categories             - 카테고리 목록
-/categories/[category]  - 특정 카테고리 포스트 목록
-```
-
-#### SEO 구현 항목
-
-- 페이지별 동적 메타태그 (title, description)
-- Open Graph 태그 (og:title, og:description, og:image)
-- Twitter Card 태그
-- JSON-LD 구조화 데이터 (Article 스키마)
-- 동적 sitemap.xml 생성
-- robots.txt 설정
-
-### 완료 기준
-
-- [ ] 카테고리 페이지에서 해당 카테고리 포스트만 표시
-- [ ] 홈 페이지에서 카테고리 필터 동작
-- [ ] 검색어 입력 시 관련 포스트 검색 결과 표시
-- [ ] 태그 클릭 시 해당 태그 포스트 필터링
-- [ ] 각 페이지 소스에서 적절한 메타태그 확인
-- [ ] `/sitemap.xml` 접근 시 모든 포스트 URL 포함
-- [ ] `/robots.txt` 접근 시 규칙 확인
-
-### 선행 조건
-
-- Phase 3 완료
-- 다양한 카테고리와 태그를 가진 포스트 등록
-
----
-
-## Phase 5: 최적화 및 배포
-
-### 목표
-
-기능이 완성된 애플리케이션의 성능을 최적화하고 프로덕션 환경에 배포합니다.
-
-### 예상 소요 시간
-
-1-2일
-
-### 작업 항목
-
-| 작업               | 설명                                   | 우선순위 |
-| ------------------ | -------------------------------------- | -------- |
-| 이미지 최적화      | Next.js Image 컴포넌트 활용, 지연 로딩 | 높음     |
-| 번들 사이즈 최적화 | 코드 스플리팅, 트리 쉐이킹 확인        | 중간     |
-| ISR 설정           | Incremental Static Regeneration 설정   | 높음     |
-| 반응형 디자인 개선 | 모바일/태블릿 UI 검수 및 개선          | 높음     |
-| 접근성 개선        | ARIA 속성, 키보드 네비게이션           | 중간     |
-| Vercel 배포        | 프로덕션 배포 및 환경 변수 설정        | 높음     |
-| 커스텀 도메인 설정 | 도메인 연결 (선택사항)                 | 낮음     |
-
-### 상세 구현 내용
-
-#### 성능 목표
-
-- Lighthouse Performance 점수: 90 이상
-- Lighthouse Accessibility 점수: 90 이상
-- First Contentful Paint (FCP): 1.8초 이하
-- Largest Contentful Paint (LCP): 2.5초 이하
-
-#### ISR 설정
-
-```typescript
-// 포스트 목록: 10분마다 재생성
-export const revalidate = 600;
-
-// 포스트 상세: 5분마다 재생성
-export const revalidate = 300;
-```
-
-### 완료 기준
-
-- [ ] Lighthouse Performance 점수 90 이상
-- [ ] Lighthouse Accessibility 점수 90 이상
-- [ ] 모바일 디바이스에서 모든 기능 정상 동작
-- [ ] ISR이 정상 동작하여 Notion 업데이트 시 자동 반영
-- [ ] Vercel 프로덕션 배포 완료
-- [ ] 프로덕션 환경에서 모든 기능 정상 동작 확인
-
-### 선행 조건
-
-- Phase 4 완료
-- Vercel 계정 및 프로젝트 생성
-
----
-
-## 전체 일정 요약
-
-| Phase    | 기간       | 주요 산출물                              |
-| -------- | ---------- | ---------------------------------------- |
-| Phase 1  | 1-2일      | 프로젝트 기본 구조, Notion API 연동 환경 |
-| Phase 2  | 2-3일      | 공통 모듈, 타입, 컴포넌트                |
-| Phase 3  | 3-4일      | 홈, 목록, 상세 페이지, 블록 렌더러       |
-| Phase 4  | 2-3일      | 카테고리, 검색, SEO                      |
-| Phase 5  | 1-2일      | 최적화, Vercel 배포                      |
-| **총합** | **9-14일** | **프로덕션 배포 완료**                   |
-
----
-
-## 향후 계획 (MVP 이후)
-
-MVP 완료 후 추가로 구현할 수 있는 기능들:
-
-| 기능        | 설명                            | 우선순위 |
-| ----------- | ------------------------------- | -------- |
-| 다크 모드   | 시스템/수동 테마 전환           | 높음     |
-| 댓글 시스템 | Giscus 연동                     | 중간     |
-| RSS 피드    | `/feed.xml` 제공                | 중간     |
-| 조회수 통계 | Vercel Analytics 또는 자체 구현 | 낮음     |
-| 소셜 공유   | Twitter, LinkedIn 공유 버튼     | 낮음     |
-| 뉴스레터    | 이메일 구독 기능                | 낮음     |
-
----
-
-## 참고 자료
-
-- [PRD 문서](./PRD.md)
-- [Next.js 15 공식 문서](https://nextjs.org/docs)
-- [Notion API 공식 문서](https://developers.notion.com/)
-- [Vercel 배포 가이드](https://vercel.com/docs)
+장소 기록 관리 웹은 방문한 장소를 기록하고 공유하고 싶은 사용자를 위한 서비스로 다음 기능을 제공합니다:
+
+- **장소 등록/관리**: 카카오맵 API를 활용한 키워드 검색으로 주소+좌표 자동 입력, 카테고리별 장소 등록
+- **리뷰 시스템**: 장소당 1인 1리뷰, 별점(1-5) + 텍스트, 평균 별점 자동 갱신
+- **목록 탐색**: 카드형 리스트 + 검색/카테고리 필터/정렬/페이지네이션
+- **지도 표시**: 장소 상세 페이지에서 카카오맵 마커로 위치 확인
+
+## 개발 워크플로우
+
+1. **작업 계획**
+   - 기존 코드베이스를 학습하고 현재 상태를 파악
+   - 새로운 작업을 포함하도록 `ROADMAP.md` 업데이트
+   - 우선순위 작업은 마지막 완료된 작업 다음에 삽입
+
+2. **작업 생성**
+   - 기존 코드베이스를 학습하고 현재 상태를 파악
+   - `/tasks` 디렉토리에 새 작업 파일 생성
+   - 명명 형식: `XXX-description.md` (예: `001-setup.md`)
+   - 고수준 명세서, 관련 파일, 수락 기준, 구현 단계 포함
+   - API/비즈니스 로직 작업 시 "## 테스트 체크리스트" 섹션 필수 포함
+
+3. **작업 구현**
+   - 작업 파일의 명세서를 따름
+   - 기능과 기능성 구현
+   - API 연동 및 비즈니스 로직 구현 시 Playwright MCP로 테스트 수행 필수
+   - 각 단계 후 작업 파일 내 단계 진행 상황 업데이트
+   - 각 단계 완료 후 중단하고 추가 지시를 기다림
+
+4. **로드맵 업데이트**
+   - 로드맵에서 완료된 작업을 ✅로 표시
+
+## 개발 단계
+
+### Phase 1: 애플리케이션 골격 구축 ✅
+
+- **Task 001: DB 스키마 마이그레이션 및 RLS 설정** ✅ - 완료
+  - ✅ places 테이블 생성 (id, user_id, name, description, category, address, latitude, longitude, avg_rating, review_count)
+  - ✅ reviews 테이블 생성 (id, place_id, user_id, rating, content, UNIQUE(place_id, user_id))
+  - ✅ RLS 정책 설정 (인증 사용자 조회, 본인만 CUD)
+  - ✅ 트리거 설정 (updated_at 자동 갱신, avg_rating/review_count 캐시 갱신)
+  - ✅ 인덱스 생성 (user_id, category, created_at, avg_rating, name pg_trgm)
+
+- **Task 002: 타입 정의 및 상수 파일 생성** - 우선순위
+  - ✅ `database.types.ts` Supabase MCP로 재생성
+  - ✅ `lib/types/place.ts` — Place, PlaceWithAuthor, PlaceFormData, PlaceResult, PlaceSearchParams, PlaceListResponse
+  - `lib/types/review.ts` — Review, ReviewWithAuthor, ReviewFormData, ReviewResult
+  - `lib/constants/place-categories.ts` — 카테고리 ENUM ↔ 한글 라벨/아이콘 매핑
+
+### Phase 2: UI 컴포넌트 구현
+
+- **Task 003: shadcn/ui 추가 및 공통 컴포넌트 구현** - 우선순위
+  - shadcn/ui 추가 설치 (Textarea, Select)
+  - `components/reviews/star-rating.tsx` — 별점 입력(클릭) + 표시(읽기전용) 겸용 컴포넌트
+  - `components/places/place-category-badge.tsx` — Badge + 카테고리 한글 라벨 표시
+
+- **Task 004: 장소 카드 및 목록 UI 구현**
+  - `components/places/place-card.tsx` — 카드 UI (이름, 카테고리 배지, 주소, 평균별점, 리뷰수, 작성자)
+  - `components/places/place-search-bar.tsx` — 검색어 Input + 카테고리 Select + 정렬 선택 → URL searchParams 변경
+  - `components/places/place-list.tsx` — 카드 그리드 레이아웃 + 페이지네이션 UI
+
+- **Task 005: 카카오맵 설정 및 장소 폼 UI 구현**
+  - `react-kakao-maps-sdk` 패키지 설치 및 환경변수(`NEXT_PUBLIC_KAKAO_APP_KEY`) 설정
+  - `app/layout.tsx`에 카카오맵 SDK Script 태그 추가
+  - `components/places/place-map-search.tsx` — 카카오 키워드 검색 → 주소+좌표 선택 Client Component
+  - `components/places/place-form.tsx` — 장소 등록/수정 겸용 폼 (이름, 설명, 카테고리 Select, 위치 MapSearch)
+
+- **Task 006: 리뷰 및 장소 상세 UI 구현**
+  - `components/reviews/review-form.tsx` — 별점 선택 + 댓글 Textarea (작성/수정 겸용)
+  - `components/reviews/review-card.tsx` — 개별 리뷰 카드 (별점, 내용, 작성자, 본인이면 수정/삭제 버튼)
+  - `components/reviews/review-list.tsx` — 리뷰 목록 컨테이너
+  - `components/places/place-detail.tsx` — 장소 상세 정보 + 카카오맵 마커 표시
+
+### Phase 3: 핵심 기능 구현
+
+- **Task 007: 장소 서버 CRUD 함수 구현** - 우선순위
+  - `lib/places.ts` — getPlaces(params), getPlace(id), createPlace(formData), updatePlace(id, formData), deletePlace(id)
+  - 페이지네이션: `.range(from, to)` + `{ count: "exact" }`, PAGE_SIZE = 12
+  - profiles JOIN으로 작성자 정보 포함
+  - Playwright MCP를 활용한 CRUD 통합 테스트
+
+- **Task 008: 리뷰 서버 CRUD 함수 구현**
+  - `lib/reviews.ts` — getReviews(placeId), getMyReview(placeId), createReview(placeId, formData), updateReview(reviewId, formData), deleteReview(reviewId)
+  - 중복 리뷰 방지 (PostgreSQL 에러코드 23505 처리)
+  - profiles JOIN으로 작성자 정보 포함
+  - Playwright MCP를 활용한 리뷰 CRUD 테스트
+
+- **Task 009: 장소 Server Actions 및 페이지 연동**
+  - `app/protected/places/actions.ts` — createPlaceAction, updatePlaceAction, deletePlaceAction
+  - `app/protected/places/page.tsx` — 장소 목록 (searchParams로 getPlaces 호출)
+  - `app/protected/places/new/page.tsx` — 장소 등록 페이지
+  - `app/protected/places/[id]/page.tsx` — 장소 상세 페이지 (getPlace + getReviews + getMyReview)
+  - `app/protected/places/[id]/edit/page.tsx` — 장소 수정 페이지 (본인 확인)
+  - Playwright MCP로 장소 등록 → 목록 표시 → 상세 조회 E2E 테스트
+
+- **Task 010: 리뷰 Server Actions 및 페이지 연동**
+  - `app/protected/places/[id]/actions.ts` — createReviewAction, updateReviewAction, deleteReviewAction
+  - 장소 상세 페이지에 리뷰 폼/목록 통합
+  - 리뷰 작성 시 별점 반영 확인, 중복 리뷰 에러 메시지 처리
+  - Playwright MCP로 리뷰 작성 → 별점 반영 → 수정/삭제 E2E 테스트
+
+- **Task 010-1: 핵심 기능 통합 테스트**
+  - Playwright MCP를 사용한 전체 사용자 플로우 테스트
+  - 장소 등록 → 목록 표시 → 상세 조회 → 리뷰 작성 → 별점 반영 플로우
+  - 카카오맵 검색 → 주소/좌표 자동 입력 검증
+  - 카테고리 필터 / 검색어 / 정렬 동작 검증
+  - 본인 장소 수정/삭제 + 중복 리뷰 에러 검증
+
+### Phase 4: 네비게이션 및 최적화
+
+- **Task 011: 네비게이션 연결 및 UX 개선**
+  - `app/protected/layout.tsx` 네비게이션에 "장소" 링크 추가
+  - 장소 상세 페이지에서 본인(`getClaims().sub === place.user_id`) 확인 후 수정/삭제 버튼 표시
+  - 빈 상태 UI (장소 없을 때, 리뷰 없을 때 안내 메시지)
+  - 로딩 상태 처리
+
+- **Task 012: 빌드 검증 및 품질 보증**
+  - `npx tsc --noEmit` — 타입 체크 통과
+  - `npm run lint` — 린트 검사 통과
+  - `npm run build` — 프로덕션 빌드 성공
+  - Playwright MCP로 최종 전체 플로우 E2E 테스트
