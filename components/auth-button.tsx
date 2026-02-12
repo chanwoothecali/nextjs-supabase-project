@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { Button } from "./ui/button";
+
 import { createClient } from "@/lib/supabase/server";
+
 import { LogoutButton } from "./logout-button";
+import { Button } from "./ui/button";
 
 export async function AuthButton() {
   const supabase = await createClient();
@@ -13,7 +15,9 @@ export async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      Hey, {user.email}!
+      <Link href="/protected/profile" className="underline-offset-4 hover:underline">
+        {user.email}
+      </Link>
       <LogoutButton />
     </div>
   ) : (
