@@ -1,0 +1,5 @@
+.next
+node_modules
+lib/supabase/database.types.ts
+package-lock.json
+.claude/settings.local.json
