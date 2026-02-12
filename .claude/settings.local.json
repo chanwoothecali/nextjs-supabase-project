@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__supabase",
+      "Bash(git -C \"D:\\\\personal\\\\sources\\\\nextjs-supabase-project\" log --oneline -10)",
+      "mcp__supabase__execute_sql",
+      "mcp__supabase__search_docs",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__generate_typescript_types",
+      "mcp__supabase__get_advisors",
+      "Bash(npx tsc:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(ls:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm view:*)",
+      "Bash(npm install:*)",
+      "Bash(npx husky:*)",
+      "Bash(npm run lint:fix:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx prettier --write .)",
+      "Bash(npx prettier --check .)",
+      "Bash(git reset:*)",
+      "WebSearch",
+      "WebFetch(domain:supabase.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run build:*)",
+      "Bash(git stash:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}
